@@ -1,0 +1,25 @@
+[project]
+name = "parulidae"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Daniel Furr",email = "danielcfurr@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "folium (>=0.19.7,<0.20.0)",
+    "streamlit-folium (>=0.25.0,<0.26.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.1.1"
+streamlit = "^1.45.1"
+pandas = "^2.3.0"
+dotenv = "^0.9.9"
+
