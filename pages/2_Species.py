@@ -1,9 +1,13 @@
 import streamlit as st
-from utils.session import initialize_session, update_species_selection
-from utils.inaturalist import get_inaturalist_photo
+from app_utils.session import initialize_session, update_species_selection
+from app_utils.inaturalist import get_inaturalist_photo
+from app_utils.maps import map_recordings
+from streamlit_folium import st_folium
+
 
 initialize_session()
-data = st.session_state['data']
+recordings = st.session_state['recordings']
+selected_recordings = st.session_state['selected_recordings']
 
 st.title("Species")
 st.write("This is a page.")
@@ -18,24 +22,5 @@ st.selectbox(
 
 get_inaturalist_photo(st.session_state['selected_scientific'])
 
-import folium
-from streamlit_folium import st_folium
-
-# Create the folium map
-m = folium.Map(
-    location=[39, -97],
-    zoom_start=4,
-    tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    attr='Esri',
-)
-
-points = [{'lat': row['lat'], 'lon': row['lon'], 'name': idx} for idx, row in st.session_state['selected_data'].iterrows()]
-
-for pt in points:
-    folium.Marker(
-        location=[pt['lat'], pt['lon']],
-        tooltip=pt['name'],
-        popup=pt['name']
-    ).add_to(m)
-
+m = map_recordings(selected_recordings)
 st_folium(m, width=700, height=500)
