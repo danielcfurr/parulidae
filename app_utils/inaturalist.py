@@ -32,4 +32,4 @@ def get_inaturalist_photo(scientific_name):
     else:
         image_url = photo.get("medium_url")
         st.image(image_url)
-        st.markdown(f"Photo by: {photo.get('attribution')}")
+        st.markdown(f"Photo is {photo.get('attribution')}")

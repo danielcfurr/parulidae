@@ -15,6 +15,8 @@ def initialize_session() -> None:
         recordings = load_recordings()
         st.session_state['recordings'] = recordings
 
+        st.session_state['monthly'] = load_monthly()
+
         names = recordings[['en', 'scientific_name']].drop_duplicates().sort_values(['en', 'scientific_name'])
         st.session_state['common_names'] = names['en']
         st.session_state['scientific_names'] = names['scientific_name']
@@ -37,7 +39,8 @@ def load_recordings():
     recordings['scientific_name'] = recordings['gen'] + ' ' + recordings['sp']
     recordings['date'] = pd.to_datetime(recordings['date'])
     recordings['uploaded'] = pd.to_datetime(recordings['uploaded'])
-    recordings['q'] = recordings['q'].astype(pd.CategoricalDtype(categories=['A', 'B', 'C', 'D', 'E'], ordered=True))
+    recordings['q_num'] = recordings['q'].map({'A': 4, 'B': 3, 'C': 2, 'D': 1, 'E': 0})
+    recordings.loc[recordings['q_num'].isna(), 'q'] = pd.NA
     return recordings
 
 
