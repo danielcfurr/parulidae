@@ -15,7 +15,7 @@ def get_inaturalist_photo(scientific_name):
     results = data.get("results")
     if not results:
         print("No results found.")
-        return
+        return None, "No photo found."
 
     # Find first instance of default photo present and appropriate license
     permitted = False
@@ -28,8 +28,7 @@ def get_inaturalist_photo(scientific_name):
             break
 
     if not permitted:
-        st.markdown("No photo available.")
+        return None, "No photo available. \U0001F61E"
     else:
         image_url = photo.get("medium_url")
-        st.image(image_url)
-        st.markdown(f"Photo is {photo.get('attribution')}")
+        return image_url, f"Photo is {photo.get('attribution')}. Courtesy of [iNaturalist](https://www.inaturalist.org)."

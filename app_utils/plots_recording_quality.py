@@ -1,6 +1,6 @@
 import pandas as pd
 import plotly.express as px
-from .plots_common import PRIMARY, DIVERGING_PALETTE, ratings_axis_args
+from .plots_common import PRIMARY, DIVERGING_PALETTE, ratings_axis_args, list_to_markdown_bullets
 
 
 def device_summary(recordings: pd.DataFrame):
@@ -158,3 +158,25 @@ def quality_by_year(recordings: pd.DataFrame):
     )
 
     return fig
+
+
+def highlights(recordings: pd.DataFrame):
+    quality = recordings['q'].dropna()
+
+    percent_a = quality.isin(['A']).mean() * 100
+    percent_ab = quality.isin(['A', 'B']).mean() * 100
+
+    counts = recordings['dvc'].value_counts()
+    popular_device = counts.index[0]
+
+    eligible = counts[counts >= 10].index.to_list()
+    quality_device = recordings.loc[recordings['dvc'].isin(eligible)].groupby('dvc')['q_num'].mean().idxmax()
+
+    facts = [
+        f'Recordings rated A: {percent_a:0.0f}%',
+        f'Recordings rated A or B: {percent_ab:0.0f}%',
+        f'Most popular recording device: {popular_device}',
+        f'Device with highest rated recordings: {quality_device}'
+    ]
+
+    return list_to_markdown_bullets(facts)

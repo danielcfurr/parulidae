@@ -1,6 +1,6 @@
 import pandas as pd
 import plotly.express as px
-from .plots_common import PRIMARY, SECONDARY
+from .plots_common import PRIMARY, SECONDARY, list_to_markdown_bullets
 
 
 def uploads_by_month_year(monthly: pd.DataFrame):
@@ -113,3 +113,21 @@ def uploads_by_species(recordings: pd.DataFrame):
     fig.update_yaxes(title=None, automargin=True)
 
     return fig
+
+
+def highlights(recordings: pd.DataFrame):
+    n_recordings = len(recordings)
+    n_contributors = recordings['rec'].nunique()
+    n_species = recordings['en'].nunique()
+    first_upload = recordings['uploaded'].min().date()
+    last_upload = recordings['uploaded'].max().date()
+
+    facts = [
+      f'Total recordings: {n_recordings}',
+      f'Total contributors: {n_contributors}',
+      f'Total species: {n_species}',
+      f'First uploaded recording: {first_upload}',
+      f'Last uploaded recording: {last_upload}'
+    ]
+
+    return list_to_markdown_bullets(facts)

@@ -1,13 +1,24 @@
 import streamlit as st
-from app_utils.session import initialize_session
+from app_utils.session import initialize_session, render_sidebar
 from app_utils import plots_recording_quality
 
 st.set_page_config(layout="wide")
+render_sidebar()
 
 initialize_session()
 recordings = st.session_state['recordings']
 
 st.title("Recording Quality")
+
+st.header("Highlights")
+
+st.markdown(
+    """This page summarizes quality ratings for the recordings, which are provided as letter grades from A to E."""
+)
+
+st.markdown(
+    plots_recording_quality.highlights(recordings)
+)
 
 st.header('Distribution of ratings')
 
@@ -30,12 +41,11 @@ st.plotly_chart(
 left, right = st.columns(2)
 with left:
     st.plotly_chart(
-        plots_recording_quality.top_devices_popularity(recordings)
+        plots_recording_quality.top_devices_quality(recordings)
         .update_layout(height=300)
     )
 with right:
     st.plotly_chart(
-        plots_recording_quality.top_devices_quality(recordings)
+        plots_recording_quality.top_devices_popularity(recordings)
         .update_layout(height=300)
     )
-

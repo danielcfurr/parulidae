@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from .plots_common import PRIMARY, SECONDARY, DIVERGING_PALETTE, continuous_colors, ratings_axis_args
+from .plots_common import PRIMARY, SECONDARY, list_to_markdown_bullets
 
 
 def cumulative_contributors_by_recording_threshold(recordings: pd.DataFrame):
@@ -147,3 +147,24 @@ def contributor_retention(recordings: pd.DataFrame):
     fig.update_yaxes(tickformat='.0%', rangemode="tozero")
 
     return fig
+
+
+def highlights(recordings: pd.DataFrame):
+    count_by_contributor = recordings.groupby('rec').size()
+
+    n_contributors = len(count_by_contributor)
+    mean_recordings = count_by_contributor.mean()
+    median_recordings = count_by_contributor.median()
+    max_recordings = count_by_contributor.max()
+    percent_single = count_by_contributor.map(lambda x: x == 1).mean() * 100
+
+    facts = [
+        f'Total contributors: {n_contributors}',
+        f'Contributors with only one recording: {percent_single:0.0f}%',
+        f'Average number of recordings: {mean_recordings:0.1f}',
+        f'Median number of recordings: {median_recordings:0.0f}',
+        f'Highest number of recordings: {max_recordings:0.0f}',
+
+    ]
+
+    return list_to_markdown_bullets(facts)

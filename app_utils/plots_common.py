@@ -4,7 +4,7 @@ import plotly.colors as pc
 
 PRIMARY = pc.sequential.Darkmint_r[2]
 SECONDARY = pc.qualitative.Set2[1]
-DIVERGING_PALETTE = pc.diverging.Portland
+DIVERGING_PALETTE = pc.diverging.Portland_r
 
 
 def continuous_colors(n, reverse=False):
@@ -21,3 +21,9 @@ def ratings_axis_args(tickvals=list(range(5)), stack=False):
     else:
         ticktext = [f"{v} ({l})" for v, l in zip(tickvals, letters)]
     return tickvals, ticktext
+
+
+def list_to_markdown_bullets(facts):
+    markdown_lines = ['  - ' + f for f in facts]
+    markdown = '\n'.join(markdown_lines)
+    return markdown

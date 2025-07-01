@@ -1,26 +1,67 @@
 import streamlit as st
-from app_utils.session import initialize_session, update_species_selection
+from app_utils.session import initialize_session, update_species_selection, render_sidebar
 from app_utils.inaturalist import get_inaturalist_photo
 from app_utils.maps import map_recordings
-from streamlit_folium import st_folium
+from app_utils import plots_species_insights
+from streamlit_folium import folium_static
 
+st.set_page_config(layout="wide")
+render_sidebar()
 
 initialize_session()
 recordings = st.session_state['recordings']
-selected_recordings = st.session_state['selected_recordings']
+species = st.session_state['selected_common']
 
-st.title("Species")
-st.write("This is a page.")
+st.title("Species insights")
 
 st.selectbox(
-    "Species",
+    "Selected species:",
     options=st.session_state['common_names'],
     index=st.session_state['selected_index'],
     key='selected_common',
     on_change=update_species_selection
 )
 
-get_inaturalist_photo(st.session_state['selected_scientific'])
+st.header(f'Highlights for {species}')
 
-m = map_recordings(selected_recordings)
-st_folium(m, width=700, height=500)
+photo_url, photo_text = get_inaturalist_photo(st.session_state['selected_scientific'])
+left, right = st.columns(2)
+with left:
+    st.markdown("This page provides data summaries specific to the selected species.")
+    st.markdown(plots_species_insights.highlights(recordings, species))
+    st.markdown(photo_text)
+with right:
+    if photo_url is not None:
+        st.image(photo_url)
+
+st.header(f'Recording locations for {species}')
+
+folium_static(
+    map_recordings(recordings, species),
+    width=700,
+    height=500
+)
+
+st.header(f'Temporal trends for {species}')
+
+left, right = st.columns(2)
+with left:
+    st.plotly_chart(
+        plots_species_insights.recordings_by_month(recordings, species)
+    )
+with right:
+    st.plotly_chart(
+        plots_species_insights.recordings_by_year(recordings, species)
+    )
+
+st.header(f'{species} compared to other species')
+
+left, right = st.columns(2)
+with left:
+    st.plotly_chart(
+        plots_species_insights.recordings_versus_other_species(recordings, species)
+    )
+with right:
+    st.plotly_chart(
+        plots_species_insights.ratings_versus_other_species(recordings, species)
+    )

@@ -14,7 +14,6 @@ def initialize_session() -> None:
 
         recordings = load_recordings()
         st.session_state['recordings'] = recordings
-
         st.session_state['monthly'] = load_monthly()
 
         names = recordings[['en', 'scientific_name']].drop_duplicates().sort_values(['en', 'scientific_name'])
@@ -30,8 +29,6 @@ def update_species_selection():
     idx = list(st.session_state['common_names']).index(common_name)
     st.session_state['selected_index'] = idx
     st.session_state['selected_scientific'] = st.session_state['scientific_names'].iloc[idx]
-    recordings = st.session_state['recordings']
-    st.session_state['selected_recordings'] = recordings.loc[recordings['en'] == common_name]
 
 
 def load_recordings():
@@ -50,3 +47,11 @@ def load_monthly():
     monthly.set_index('month')
     return monthly
 
+
+def render_sidebar():
+    st.sidebar.markdown(
+        """
+        This dashboard summarizes [xeno-canto](https://xeno-canto.org/) recordings of 
+        US warblers over the past ten years.
+        """
+    )
