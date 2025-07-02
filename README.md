@@ -39,7 +39,7 @@ Optionally, the data may be updated by following a few steps:
   1. Register for a [Xeno-canto](https://xeno-canto.org/) account and find your API key under
      your [account page](https://xeno-canto.org/explore/api).
   2. Create a file named .env and store the API key as `XENOCANTO_API_KEY=xxxx`.
-  3. Update the data from Xeno-canto with `python run dev_utils/data.py`.
+  3. Update the data from Xeno-canto with `python dev_utils/data.py`.
 
 
 ## About
