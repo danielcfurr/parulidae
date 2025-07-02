@@ -15,7 +15,7 @@ with left:
     last_month = st.session_state.get('last_month')
     f"""
     This dashboard summarizes audio recordings of warblers in the United States 
-    that have been contributed to xeno-canto, a global repository of nature sound 
+    that have been contributed to [Xeno-canto](https://xeno-canto.org), a global repository of nature sound 
     recordings shared under Creative Commons licenses. It demonstrates how web service 
     usage can be analyzed over time, across contributors, and by content type. 
     The data include recordings uploaded from {first_month} to {last_month}.
@@ -33,8 +33,6 @@ with left:
       - **Contributor Insights**: An analysis of contributor behavior, including activity patterns and retention
       - **Species Insights** Tools to filter recordings by species, compare trends across species, and access example recordings
     """
-
-
 
 with right:
     recordings = load_recordings()

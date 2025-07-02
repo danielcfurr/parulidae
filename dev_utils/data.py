@@ -89,6 +89,6 @@ def clean_monthly(recordings_df):
 
 
 if __name__ == "__main__":
-    #retrieve_recording_data()
+    retrieve_recording_data()
     recordings = clean_recordings()
     clean_monthly(recordings)
