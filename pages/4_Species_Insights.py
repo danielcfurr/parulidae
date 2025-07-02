@@ -6,28 +6,32 @@ from app_utils import plots_species_insights
 from streamlit_folium import folium_static
 
 st.set_page_config(layout="wide")
+initialize_session()
 render_sidebar()
 
-initialize_session()
 recordings = st.session_state['recordings']
-species = st.session_state['selected_common']
 
 st.title("Species insights")
 
-st.selectbox(
+"""
+This page provides tools to filter recordings by species, compare 
+trends across species, and access example recordings. Please select
+a species to explore.
+"""
+
+species = st.selectbox(
     "Selected species:",
     options=st.session_state['common_names'],
     index=st.session_state['selected_index'],
-    key='selected_common',
-    on_change=update_species_selection
 )
+
+update_species_selection(species)
 
 st.header(f'Highlights for {species}')
 
 photo_url, photo_text = get_inaturalist_photo(st.session_state['selected_scientific'])
 left, right = st.columns(2)
 with left:
-    st.markdown("This page provides data summaries specific to the selected species.")
     st.markdown(plots_species_insights.highlights(recordings, species))
     st.markdown(photo_text)
 with right:
@@ -35,6 +39,8 @@ with right:
         st.image(photo_url)
 
 st.header(f'Recording locations for {species}')
+
+"""Click on map pins to access information about the recordings, including a link to hear them."""
 
 folium_static(
     map_recordings(recordings, species),

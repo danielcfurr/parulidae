@@ -5,19 +5,17 @@ from app_utils import plots_recording_trends
 from streamlit_folium import folium_static
 
 st.set_page_config(layout="wide")
+initialize_session()
 render_sidebar()
 
-initialize_session()
 recordings = st.session_state['recordings']
 monthly = st.session_state['monthly']
 
 st.title("Recording Trends")
 
-st.header("Highlights")
+"""This page provides an overview of recording activity by location, over time, and by species."""
 
-st.markdown(
-    """This page provides an overview of warbler recording uploads."""
-)
+st.header("Highlights")
 
 st.markdown(
     plots_recording_trends.highlights(recordings)

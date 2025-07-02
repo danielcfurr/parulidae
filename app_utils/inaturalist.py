@@ -1,5 +1,4 @@
 import requests
-import streamlit as st
 
 
 def get_inaturalist_photo(scientific_name):

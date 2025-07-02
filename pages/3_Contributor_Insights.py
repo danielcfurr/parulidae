@@ -3,18 +3,16 @@ from app_utils.session import initialize_session, render_sidebar
 from app_utils import plots_contributor_insights
 
 st.set_page_config(layout="wide")
+initialize_session()
 render_sidebar()
 
-initialize_session()
 recordings = st.session_state['recordings']
 
 st.title("Contributor Insights")
 
-st.header("Highlights")
+"""This page provides an analysis of contributor behavior, including activity patterns and retention."""
 
-st.markdown(
-    """This page describes the people who contribute the recordings."""
-)
+st.header("Highlights")
 
 st.markdown(
     plots_contributor_insights.highlights(recordings)
